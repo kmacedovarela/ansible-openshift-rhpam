@@ -91,7 +91,7 @@
 
 - name: Set base param fact
   set_fact:
-    TEMPLATE_PARAMS: -p APPLICATION_NAME="rhpam7" -p KIE_ADMIN_USER="pamAdmin" -p MAVEN_REPO_USERNAME="mavenUser" -p BUSINESS_CENTRAL_MEMORY_LIMIT="4Gi" 
+    TEMPLATE_PARAMS: -p APPLICATION_NAME="rhpam7" -p KIE_ADMIN_USER="pamAdmin -p BUSINESS_CENTRAL_MEMORY_LIMIT="4Gi" 
 
 - name: Set additional facts for non-trial environment
   set_fact:
