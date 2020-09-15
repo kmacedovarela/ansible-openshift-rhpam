@@ -36,7 +36,6 @@
   shell: oc process -f {{ PAM_SECRETS_TEMPLATE_YML }} -p SECRET_NAME=businesscentral-app-secret | oc create -f - -n {{ OCP_PROJECT }}
   when: bc_secret_result is failed
 
-
 - name: Check Secrets KIE-Server
   shell: "oc get secret/kieserver-app-secret -n {{ OCP_PROJECT }}"
   register: ks_secret_result
@@ -57,31 +56,31 @@
   shell: oc create secret generic rhpam-credentials --from-literal=KIE_ADMIN_USER=pamAdmin --from-literal=KIE_ADMIN_PWD=redhatpam1! -n {{ OCP_PROJECT }}
   when: rhpam_credentials_secret_result is failed
 
-- name: Check Service Account Business Central
-  shell: "oc get serviceaccount/businesscentral-service-account -n {{ OCP_PROJECT }}"
-  register: bc_sa_result
-  ignore_errors: true
-  changed_when: false
+# # - name: Check Service Account Business Central
+# #   shell: "oc get serviceaccount/businesscentral-service-account -n {{ OCP_PROJECT }}"
+# #   register: bc_sa_result
+# #   ignore_errors: true
+# #   changed_when: false
 
-- name: Create Service Account Business Central
-  shell: oc create serviceaccount businesscentral-service-account -n {{ OCP_PROJECT }}
-  when: bc_sa_result is failed
+# - name: Create Service Account Business Central
+#   shell: oc create serviceaccount businesscentral-service-account -n {{ OCP_PROJECT }}
+#   when: bc_sa_result is failed
 
-- name: Check Service Account KIE_Server
-  shell: "oc get serviceaccount/kieserver-service-account -n {{ OCP_PROJECT }}"
-  register: ks_sa_result
-  ignore_errors: true
-  changed_when: false
+# - name: Check Service Account KIE_Server
+#   shell: "oc get serviceaccount/kieserver-service-account -n {{ OCP_PROJECT }}"
+#   register: ks_sa_result
+#   ignore_errors: true
+#   changed_when: false
 
-- name: Create Service Account KIE Server
-  shell: oc create serviceaccount kieserver-service-account -n {{ OCP_PROJECT }}
-  when: ks_sa_result is failed
+# - name: Create Service Account KIE Server
+#   shell: oc create serviceaccount kieserver-service-account -n {{ OCP_PROJECT }}
+#   when: ks_sa_result is failed
 
-- name: Link secrets and service account Business Central
-  shell: oc secrets link --for=mount businesscentral-service-account businesscentral-app-secret -n {{ OCP_PROJECT }}
+# - name: Link secrets and service account Business Central
+#   shell: oc secrets link --for=mount businesscentral-service-account businesscentral-app-secret -n {{ OCP_PROJECT }}
 
-- name: Link secrets and service account KIE-server
-  shell: oc secrets link --for=mount kieserver-service-account kieserver-app-secret -n {{ OCP_PROJECT }}
+# - name: Link secrets and service account KIE-server
+#   shell: oc secrets link --for=mount kieserver-service-account kieserver-app-secret -n {{ OCP_PROJECT }}
 
 - name: check if RHPAM exists
   shell: "oc get dc/rhpam7-rhpamcentr -n {{ OCP_PROJECT }}"
@@ -91,11 +90,11 @@
 
 - name: Set base param fact
   set_fact:
-    TEMPLATE_PARAMS: -p APPLICATION_NAME="rhpam7" -p KIE_ADMIN_USER="pamAdmin" -p BUSINESS_CENTRAL_MEMORY_LIMIT="6Gi" 
+    TEMPLATE_PARAMS: -p APPLICATION_NAME="rhpam7" -p BUSINESS_CENTRAL_MEMORY_LIMIT="6Gi" 
 
 - name: Set additional facts for non-trial environment
   set_fact:
-    TEMPLATE_PARAMS: "{{ TEMPLATE_PARAMS }} -p KIE_ADMIN_PWD='redhatpam1' -p KIE_SERVER_PWD='test1234!' -p BUSINESS_CENTRAL_HTTPS_SECRET='businesscentral-app-secret' -p KIE_SERVER_HTTPS_SECRET='kieserver-app-secret' -p CREDENTIALS_SECRET='rhpam-credentials'"
+    TEMPLATE_PARAMS: "{{ TEMPLATE_PARAMS }} -p BUSINESS_CENTRAL_HTTPS_SECRET='businesscentral-app-secret' -p KIE_SERVER_HTTPS_SECRET='kieserver-app-secret' -p CREDENTIALS_SECRET='rhpam-credentials'"
   when: RHPAM_ENVIRONMENT != "trial-ephemeral"
 
 - name: Create PAM7 environment
@@ -105,8 +104,8 @@
           -p IMAGE_STREAM_NAMESPACE={{ IMAGE_STREAM_NAMESPACE }} -n {{ OCP_PROJECT }}
   when: rhpam_result is failed
 
-- name: Disable OpenShiftStartupStrategy
-  shell: "oc set env dc/rhpam7-rhpamcentr KIE_WORKBENCH_CONTROLLER_OPENSHIFT_ENABLED=false -n {{ OCP_PROJECT }}"
+# - name: Disable OpenShiftStartupStrategy
+#   shell: "oc set env dc/rhpam7-rhpamcentr KIE_WORKBENCH_CONTROLLER_OPENSHIFT_ENABLED=false -n {{ OCP_PROJECT }}"
 
-- name: Configure KIE-Server
-  shell: "oc set env dc/rhpam7-kieserver KIE_SERVER_STARTUP_STRATEGY=ControllerBasedStartupStrategy  KIE_SERVER_CONTROLLER_SERVICE=rhpam7-rhpamcentr KIE_SERVER_CONTROLLER_PROTOCOL=ws KIE_SERVER_ROUTE_NAME=insecure-rhpam7-kieserver -n {{ OCP_PROJECT }}"
+# - name: Configure KIE-Server
+#   shell: "oc set env dc/rhpam7-kieserver KIE_SERVER_STARTUP_STRATEGY=ControllerBasedStartupStrategy  KIE_SERVER_CONTROLLER_SERVICE=rhpam7-rhpamcentr KIE_SERVER_CONTROLLER_PROTOCOL=ws KIE_SERVER_ROUTE_NAME=insecure-rhpam7-kieserver -n {{ OCP_PROJECT }}"
