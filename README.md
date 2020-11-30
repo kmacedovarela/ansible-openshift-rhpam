@@ -36,7 +36,7 @@ The following tables shows the version combinations that are tested and verified
 | 0.0.4   | 3.11.x  |
 | 0.0.5   | 3.11.x, 4.x |
 | 0.0.6   | 4.5 |
-| 0.0.7   | 4.6 |
+| 0.0.8   | 4.6 |
 
 
 
