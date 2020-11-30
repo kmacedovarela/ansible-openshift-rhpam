@@ -12,9 +12,9 @@ Role Variables
 |-----------------------------|--------------------|----------|----------------|
 |`OCP_PROJECT`                | `rhpam`            | Required | OpenShift project name in which to provision this role |
 |`IMAGE_STREAM_NAMESPACE`     | `openshift`        | Optional | Namespaces in which the RHPAM ImageStreams have been installed. |
-|`RHPAM_VERSION_TAG`          | `7.8.0.GA`         | Optional | RHPAM container image tag in registry.redhat.io. I.e. the RHPAM version to deploy. |
+|`RHPAM_VERSION_TAG`          | `7.9.0.GA`         | Optional | RHPAM container image tag in registry.redhat.io. I.e. the RHPAM version to deploy. |
 |`RHPAM_ENVIRONMENT`          | `trial-ephemeral`            | Optional | RHPAM Environment type. Currently "trial-ephemeral" (default) and "authoring" have been tested. |
-|`RHPAM_VERSION_ID`           | `78`      | Optional | The version id used when selecting the RHPAM-Authoring template to test. E.g. `78` for templates of version `7.8.x`, `74` for templates of version `7.4.x`, etc. |
+|`RHPAM_VERSION_ID`           | `79`      | Optional | The version id used when selecting the RHPAM-Authoring template to test. E.g. `79` for templates of version `7.9.x`, `74` for templates of version `7.4.x`, etc. |
 
 OpenShift Version Compatibility
 ------------
@@ -23,7 +23,7 @@ When listing this role in `requirements.yml`, make sure to pin the version of th
 
 ```
 - src: duncandoyle.ansible_openshift_rhpam
-  version: 0.0.6
+  version: 0.0.7
 ```  
 
 The following tables shows the version combinations that are tested and verified:
@@ -36,6 +36,8 @@ The following tables shows the version combinations that are tested and verified
 | 0.0.4   | 3.11.x  |
 | 0.0.5   | 3.11.x, 4.x |
 | 0.0.6   | 4.5 |
+| 0.0.7   | 4.6 |
+
 
 
 Note that if a version combination is not listed above, it does **NOT** mean that it won't work on that
